@@ -20,9 +20,28 @@ First login to your server, we are use Ubuntu.
 
 4. exit form MySQL
 
-```Bye```
+```exit;```
 
 
 Also as alternative way, you can inser user via phpmyadmin. check only needed permission for create readonly user
 ![image](https://user-images.githubusercontent.com/8861284/111922973-79fb6200-8aba-11eb-98cb-d9fd7674b29a.png)
+
+
+## save user and password of dump user for mysql
+
+open or create mysql public conf file
+
+```sudo nano ~/.my.cnf```
+
+copy and paste below text and update username and password if needed
+
+```
+[mysqldump]
+user=dumper
+password=PUT_YOUR_PASSWORD_HERE
+```
+press `ctrl+x` then press `y` to save file and exit
+
+## create sh to get backup from all database
+
 
