@@ -11,7 +11,8 @@ First login to your server, we are use Ubuntu.
 
 2. enter your mysql root password or some other user. change username if you want and enter your password
 
-```GRANT LOCK TABLES, SELECT ON *.* TO 'dumper'@'%' IDENTIFIED BY 'PUT_YOUR_PASSWORD_HERE';```
+```CREATE USER 'dumper'@'localhost' IDENTIFIED WITH mysql_native_password BY 'PUT_YOUR_PASSWORD_HERE';```
+```GRANT SELECT, LOCK TABLES ON *.* TO 'dumper'@'localhost';```
 
 3. update privileges
 
@@ -20,3 +21,8 @@ First login to your server, we are use Ubuntu.
 4. exit form MySQL
 
 ```Bye```
+
+
+Also as alternative way, you can inser user via phpmyadmin. check only needed permission for create readonly user
+![image](https://user-images.githubusercontent.com/8861284/111922973-79fb6200-8aba-11eb-98cb-d9fd7674b29a.png)
+
