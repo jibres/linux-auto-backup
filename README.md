@@ -1,4 +1,4 @@
-# mysql-auto-backup
+# MySQL Auto Backup
 Automatic backup from all databases in MySQL and transfer them to another server
 
 You can follow these steps to take a backup from your database and transfer them to safe place outside of this server. then put it inside cronjob to do it periodically.
