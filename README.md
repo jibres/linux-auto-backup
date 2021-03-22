@@ -10,7 +10,7 @@ First login to your server, we are use Ubuntu.
 enter your mysql root password or some other user. change username if you want and enter your password
 1. ```sudo mysql -u root -p```
 2. ```CREATE USER 'dumper'@'localhost' IDENTIFIED WITH mysql_native_password BY 'PUT_YOUR_PASSWORD_HERE';```
-3. ```GRANT SELECT, LOCK TABLES ON *.* TO 'dumper'@'localhost';```
+3. ```GRANT SELECT, PROCESS, LOCK TABLES ON *.* TO 'dumper'@'localhost';```
 4. ```flush privileges;```
 5. ```exit;```
 
@@ -44,6 +44,11 @@ after above steps you can create a backup file from specefic database with comma
 it's depend on you to create a backup from one database or all.
 
 ```mysqldump -v --column-statistics=0 --all-databases > backup-$(date +%Y%m%d-%H%M%S).sql```
+
+#### ALL database and compress bz2
+it's depend on you to create a backup from one database or all.
+
+```mysqldump -v --column-statistics=0 --all-databases | gzip > backup-$(date +%Y%m%d-%H%M%S).sql.gz```
 
 
 
@@ -82,7 +87,7 @@ We are recommend to create backup from all. so create a sh file
 
 Copy and paste below line inside editor to create mysql backup
 
-```mysqldump --column-statistics=0 --all-databases > /home/mysql-auto-backup/backup-all.sql```
+```mysqldump --column-statistics=0 --all-databases | gzip > /home/mysql-auto-backup/backup-all.sql.gz```
 
 then we need to transfer this file to another location, so use rsync
 
