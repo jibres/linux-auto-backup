@@ -38,17 +38,17 @@ Press `ctrl+x` then press `y` to save file and exit
 after above steps you can create a backup file from specefic database with command mysqldump without password. -v flag show process list and we don't need it inside automation process
 
 #### One specefic database
-```mysqldump -v --column-statistics=0 YOUR_DATABASE_NAME > /home/backup-$(date +%Y%m%d-%H%M%S).sql```
+```mysqldump -v --column-statistics=0 --quick --single-transaction YOUR_DATABASE_NAME > /home/backup-$(date +%Y%m%d-%H%M%S).sql```
 
 #### ALL database
 it's depend on you to create a backup from one database or all.
 
-```mysqldump -v --column-statistics=0 --all-databases > backup-$(date +%Y%m%d-%H%M%S).sql```
+```mysqldump -v --column-statistics=0 --quick --single-transaction --all-databases > backup-$(date +%Y%m%d-%H%M%S).sql```
 
 #### ALL database and compress bz2
 for our example database 1.7G compressed into 70Mb! so it's better to compress backup
 
-```mysqldump -v --column-statistics=0 --all-databases | gzip > backup-$(date +%Y%m%d-%H%M%S).sql.gz```
+```mysqldump -v --column-statistics=0 --quick --single-transaction --all-databases | gzip > backup-$(date +%Y%m%d-%H%M%S).sql.gz```
 
 
 
@@ -89,7 +89,7 @@ Copy and paste below line inside editor to create mysql backup
 
 ```
 FILENAME=backup-$(date +%Y%m%d-%H%M%S).sql.gz
-mysqldump --column-statistics=0 --all-databases | gzip > /home/mysql-auto-backup/$FILENAME
+mysqldump --column-statistics=0 --quick --single-transaction --all-databases | gzip > /home/mysql-auto-backup/$FILENAME
 rsync -avrt --delete /home/mysql-auto-backup/$FILENAME root@1.2.3.4:/home/mysql-auto-backup/
 ```
 
@@ -104,7 +104,7 @@ Setup a cronjob to sync your files automatically. This example syncs them every 
 
 paste below line to run sh
 
-```0 * * * * root sh /home/mysql-auto-backup/ >/dev/null 2>&1```
+```0 * * * * root sh /home/mysql-auto-backup/backup.sh >/dev/null 2>&1```
 
 press `ctrl+x` then press `y` to save file and exit
 
