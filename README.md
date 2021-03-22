@@ -16,7 +16,7 @@ enter your mysql root password or some other user. change username if you want a
 
 
 Also as alternative way, you can insert user via phpmyadmin. check only needed permission for create readonly user
-![image](https://user-images.githubusercontent.com/8861284/111922973-79fb6200-8aba-11eb-98cb-d9fd7674b29a.png)
+![image](https://user-images.githubusercontent.com/8861284/111926849-1843f380-8acc-11eb-8245-183e3c5654ea.png)
 
 
 
