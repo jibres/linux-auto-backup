@@ -46,7 +46,7 @@ it's depend on you to create a backup from one database or all.
 ```mysqldump -v --column-statistics=0 --all-databases > backup-$(date +%Y%m%d-%H%M%S).sql```
 
 #### ALL database and compress bz2
-it's depend on you to create a backup from one database or all.
+for our example database 1.7G compressed into 70Mb! so it's better to compress backup
 
 ```mysqldump -v --column-statistics=0 --all-databases | gzip > backup-$(date +%Y%m%d-%H%M%S).sql.gz```
 
