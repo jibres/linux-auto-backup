@@ -70,6 +70,7 @@ press yes and enter password of target server. you can change user to anything
 
 ### rsync syntax example
 Connect on port 22 of ssh. delete file on target server if exist then copy to path in another server
+
 ```rsync -avrt --delete --rsh='ssh -p 22' /home/backup-file.sql /target_server/path/```
 
 
@@ -92,13 +93,13 @@ press `ctrl+x` then press `y` to save file and exit
 
 
 ## Setup cronjob
-Setup a cronjob to sync your files automatically. This example syncs them every 10 minutes.
+Setup a cronjob to sync your files automatically. This example syncs them every hour.
 
 ```nano /etc/crontab```
 
 paste below line to run sh
 
-```*/10 * * * * root sh /home/mysql-auto-backup/ >/dev/null 2>&1```
+```0 * * * * root sh /home/mysql-auto-backup/ >/dev/null 2>&1```
 
 press `ctrl+x` then press `y` to save file and exit
 
