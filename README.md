@@ -87,11 +87,11 @@ We are recommend to create backup from all. so create a sh file
 
 Copy and paste below line inside editor to create mysql backup
 
-```mysqldump --column-statistics=0 --all-databases | gzip > /home/mysql-auto-backup/backup-all.sql.gz```
-
-then we need to transfer this file to another location, so use rsync
-
-```rsync -avrt --delete /home/mysql-auto-backup/backup-all.sql root@1.2.3.4:/home/mysql-auto-backup/```
+```
+FILENAME=backup-$(date +%Y%m%d-%H%M%S).sql.gz
+mysqldump --column-statistics=0 --all-databases | gzip > /home/mysql-auto-backup/$FILENAME
+rsync -avrt --delete /home/mysql-auto-backup/$FILENAME root@1.2.3.4:/home/mysql-auto-backup/
+```
 
 press `ctrl+x` then press `y` to save file and exit
 
