@@ -54,6 +54,7 @@ echo "*** START DUMP DATABASE"
 mysqldump --quick --single-transaction --column-statistics=0 --all-databases | gzip > $FILEPATH
 
 
+
 # transfer backup to server if set
 if [ $backup_server1 ]; then
 	# sync with remote server 1
@@ -78,6 +79,8 @@ if [ $backup_server3 ]; then
 	rsync -avrt --rsync-path="mkdir -p $TARGET_PATH && rsync -avrt" $FILEPATH $backup_server3:$TARGET_PATH
 fi
 
+
+
 # transfer backup to s3
 # first use system s3 with saved detail
 if [ $s3_bucketSaved_name ]; then
@@ -87,12 +90,30 @@ if [ $s3_bucketSaved_name ]; then
 	s3cmd sync $FILEPATH s3://$s3_bucketSaved_name$TARGET_FOLDER
 fi
 
+
 # save into 3 different s3 storage with pass credential detail
 if [ $s3_bucket1_name ] && [ $s3_bucket1_access ] && [ $s3_bucket1_secret ] && [ $s3_bucket1_endpoint ]; then
 	# sync with s3 storage server 1
 	echo "*** SYNC WITH S3 STORAGE 1"
 	echo "--> PATH "s3://$s3_bucket1_name$TARGET_FOLDER
-	#s3cmd sync $FILEPATH s3://$s3_bucket1_name$TARGET_FOLDER
+	s3cmd sync --access_key=$s3_bucket1_access --secret_key=$s3_bucket1_secret --host=$s3_bucket1_endpoint --host-bucket=$s3_bucket1_endpoint $FILEPATH s3://$s3_bucket1_name$TARGET_FOLDER
 fi
+
+
+if [ $s3_bucket2_name ] && [ $s3_bucket2_access ] && [ $s3_bucket2_secret ] && [ $s3_bucket2_endpoint ]; then
+	# sync with s3 storage server 2
+	echo "*** SYNC WITH S3 STORAGE 2"
+	echo "--> PATH "s3://$s3_bucket2_name$TARGET_FOLDER
+	s3cmd sync --access_key=$s3_bucket2_access --secret_key=$s3_bucket2_secret --host=$s3_bucket2_endpoint --host-bucket=$s3_bucket2_endpoint $FILEPATH s3://$s3_bucket2_name$TARGET_FOLDER
+fi
+
+
+if [ $s3_bucket3_name ] && [ $s3_bucket3_access ] && [ $s3_bucket3_secret ] && [ $s3_bucket3_endpoint ]; then
+	# sync with s3 storage server 3
+	echo "*** SYNC WITH S3 STORAGE 3"
+	echo "--> PATH "s3://$s3_bucket3_name$TARGET_FOLDER
+	s3cmd sync --access_key=$s3_bucket3_access --secret_key=$s3_bucket3_secret --host=$s3_bucket3_endpoint --host-bucket=$s3_bucket3_endpoint $FILEPATH s3://$s3_bucket3_name$TARGET_FOLDER
+fi
+
 
 echo "*** Mission Complete"
