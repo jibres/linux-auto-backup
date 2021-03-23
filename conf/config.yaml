@@ -1,0 +1,20 @@
+--
+server:
+  name: YOUR_SERVER_CUSTOM_NAME
+backup_server:
+  server1: root@1.2.3.4
+  server2: root@1.2.3.4
+#  server3: root@1.2.3.4
+backup_s3:
+  bucket1:
+    access_key: '123'
+    secret_key: '456'
+    endpoint: fra1.digitaloceanspaces.com
+#  bucket2:
+#    access_key: '123'
+#    secret_key: '456'
+#    endpoint: fra1.digitaloceanspaces.com
+#  bucket3:
+#    access_key: '123'
+#    secret_key: '456'
+#    endpoint: fra1.digitaloceanspaces.com
