@@ -6,15 +6,20 @@ backup:
   server2: root@1.2.3.4
 #  server3: root@1.2.3.4
 s3:
+  bucketSaved:
+    name: YOUR_BUCKET_NAME
   bucket1:
+    name: YOUR_BUCKET_NAME
     access: 123
     secret: 456
     endpoint: fra1.digitaloceanspaces.com
 #  bucket2:
+#    name: YOUR_BUCKET_NAME
 #    access: 123
 #    secret: 456
-#    endpoint: fra1.digitaloceanspaces.com
+#    endpoint: s3.eu-west-1.amazonaws.com
 #  bucket3:
+#    name: YOUR_BUCKET_NAME
 #    access: 123
 #    secret: 456
-#    endpoint: fra1.digitaloceanspaces.com
+#    endpoint: s3.ir-thr-at1.arvanstorage.com
