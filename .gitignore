@@ -4,3 +4,7 @@ desktop.ini
 *.sublime-*
 
 *.me.*
+*.sq.gz
+hourly/
+daily/
+monthly/
