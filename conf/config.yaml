@@ -7,14 +7,14 @@ backup:
 #  server3: root@1.2.3.4
 s3:
   bucket1:
-    access: '123'
-    secret: '456'
+    access: 123
+    secret: 456
     endpoint: fra1.digitaloceanspaces.com
 #  bucket2:
-#    access: '123'
-#    secret: '456'
+#    access: 123
+#    secret: 456
 #    endpoint: fra1.digitaloceanspaces.com
 #  bucket3:
-#    access: '123'
-#    secret: '456'
+#    access: 123
+#    secret: 456
 #    endpoint: fra1.digitaloceanspaces.com
