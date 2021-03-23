@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC1003
+# https://github.com/jasperes/bash-yaml
 
 # Based on https://gist.github.com/pkuczynski/8665367
 
