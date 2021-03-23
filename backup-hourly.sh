@@ -29,12 +29,38 @@ fi
 #BUCKET_1=YOUR_BUCKET_NAME
 
 
-
-#define file name
-FILENAME=backup[$server_name]-alldb-h$(date +%H).sql.gz
-
 #define folder name
 BACKUP_FOLDER="hourly"
+
+FILE_UNIQUE_NAME="NA"
+
+case $BACKUP_FOLDER in
+
+  hourly)
+    FILE_UNIQUE_NAME=-h$(date +%H)
+    ;;
+
+  daily)
+    FILE_UNIQUE_NAME=-d$(date +%d)
+	$(date +%Y%m%d-%H%M%S)
+    ;;
+
+  monthly)
+    FILE_UNIQUE_NAME=-m$(date +%m)
+    ;;
+	
+  *)
+    echo -n "*** unknown backup mode - create now"
+	FILE_UNIQUE_NAME=-now
+	BACKUP_FOLDER=now-$(date +%Y%m%d-%H%M%S)
+    ;;
+esac
+
+
+
+#define file name
+FILENAME=backup[$server_name]-alldb$FILE_UNIQUE_NAME.sql.gz
+
 
 #define file path
 FOLDER_PATH="$(pwd)/$BACKUP_FOLDER"
