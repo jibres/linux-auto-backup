@@ -28,10 +28,7 @@ if [ -f conf/bucket_1.me.conf ]; then
 fi
 #BUCKET_1=YOUR_BUCKET_NAME
 
-
-#define folder name
-BACKUP_FOLDER="hourly"
-
+#file name for backup
 FILE_UNIQUE_NAME="NA"
 
 case $BACKUP_FOLDER in
