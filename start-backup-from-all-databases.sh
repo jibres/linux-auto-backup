@@ -39,7 +39,6 @@ case $BACKUP_FOLDER in
 
   daily)
     FILE_UNIQUE_NAME=-d$(date +%d)
-	$(date +%Y%m%d-%H%M%S)
     ;;
 
   monthly)
@@ -74,7 +73,7 @@ TARGET_PATH=/home$TARGET_FOLDER
 
 # create a dump from all database
 echo "*** START DUMP DATABASE"
-mysqldump --quick --single-transaction --column-statistics=0 --all-databases | gzip > $FILEPATH
+mysqldump --quick --single-transaction --column-statistics=0 --verbose --all-databases | gzip > $FILEPATH
 
 
 
@@ -118,7 +117,7 @@ fi
 if [ $s3_bucket1_name ] && [ $s3_bucket1_access ] && [ $s3_bucket1_secret ] && [ $s3_bucket1_endpoint ]; then
 	# sync with s3 storage server 1
 	echo "*** SYNC WITH S3 STORAGE 1"
-	echo "--> PATH "s3://$s3_bucket1_name$TARGET_FOLDER
+	echo "--> PATH " $s3_bucket1_endpoint -- s3://$s3_bucket1_name$TARGET_FOLDER
 	s3cmd sync --access_key=$s3_bucket1_access --secret_key=$s3_bucket1_secret --host=$s3_bucket1_endpoint --host-bucket=$s3_bucket1_endpoint $FILEPATH s3://$s3_bucket1_name$TARGET_FOLDER
 fi
 
@@ -126,7 +125,7 @@ fi
 if [ $s3_bucket2_name ] && [ $s3_bucket2_access ] && [ $s3_bucket2_secret ] && [ $s3_bucket2_endpoint ]; then
 	# sync with s3 storage server 2
 	echo "*** SYNC WITH S3 STORAGE 2"
-	echo "--> PATH "s3://$s3_bucket2_name$TARGET_FOLDER
+	echo "--> PATH "$s3_bucket2_endpoint -- s3://$s3_bucket2_name$TARGET_FOLDER
 	s3cmd sync --access_key=$s3_bucket2_access --secret_key=$s3_bucket2_secret --host=$s3_bucket2_endpoint --host-bucket=$s3_bucket2_endpoint $FILEPATH s3://$s3_bucket2_name$TARGET_FOLDER
 fi
 
@@ -134,7 +133,7 @@ fi
 if [ $s3_bucket3_name ] && [ $s3_bucket3_access ] && [ $s3_bucket3_secret ] && [ $s3_bucket3_endpoint ]; then
 	# sync with s3 storage server 3
 	echo "*** SYNC WITH S3 STORAGE 3"
-	echo "--> PATH "s3://$s3_bucket3_name$TARGET_FOLDER
+	echo "--> PATH "$s3_bucket3_endpoint -- s3://$s3_bucket3_name$TARGET_FOLDER
 	s3cmd sync --access_key=$s3_bucket3_access --secret_key=$s3_bucket3_secret --host=$s3_bucket3_endpoint --host-bucket=$s3_bucket3_endpoint $FILEPATH s3://$s3_bucket3_name$TARGET_FOLDER
 fi
 
