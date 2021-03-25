@@ -109,5 +109,8 @@ paste below line to run bash. first line run every one hour. second run every da
 30 4 1 * * root bash /home/linux-auto-backup/backup-monthly.sh >/dev/null 2>&1
 ```
 
+if on this server you don't have database and only need to backup from files you can set below cmd
+```0 * * * * root bash /home/linux-auto-backup/sync-changes.sh >/dev/null 2>&1```
+
 press `ctrl+x` then press `y` to save file and exit
 
