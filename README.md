@@ -97,13 +97,17 @@ then wait until transfer all exist files to backup server and s3 storage. on nex
 
 
 ## Setup cronjob
-Setup a cronjob to sync your files automatically. This example syncs them every hour.
+Setup a cronjob to sync your files automatically.
 
-```nano /etc/crontab```
+```crontab -e```
 
-paste below line to run sh
+paste below line to run bash. first line run every one hour. second run every day on 3:30. third run every month on 4:30
 
-```0 * * * * root sh /home/linux-auto-backup/backup.sh >/dev/null 2>&1```
+```
+0 * * * * root bash /home/linux-auto-backup/backup-hourly.sh >/dev/null 2>&1
+30 3 * * * root bash /home/linux-auto-backup/backup-daily.sh >/dev/null 2>&1
+30 4 1 * * root bash /home/linux-auto-backup/backup-monthly.sh >/dev/null 2>&1
+```
 
 press `ctrl+x` then press `y` to save file and exit
 
