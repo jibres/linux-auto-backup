@@ -81,6 +81,21 @@ on config ask you below detail
 11. if Success, ask for save setting. type `y` and press enter
 
 
+## Test sync command manually
+on start before backup database, it's good idea to run sync process manually. on first run it was sync files already exist.
+
+first you need to enter your config file for your server. fo to `conf` folder. create a copy from `conf/config.yaml` and rename it to your server name. it must seems like `config[MY_SERVER_NAME].me.yaml`.
+open this file and edit. enable server backup or s3 storage.
+
+after enter your config for this server run below command.
+
+```bash sync-changes.sh```
+
+then wait until transfer all exist files to backup server and s3 storage. on next step take we are add them into cronjob
+
+
+
+
 ## Setup cronjob
 Setup a cronjob to sync your files automatically. This example syncs them every hour.
 
