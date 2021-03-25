@@ -1,5 +1,5 @@
-# MySQL Auto Backup
-Automatic backup from all databases in MySQL and transfer them to another server
+# Linux Auto Backup
+Automatic backup from everything in your linux include MySQL, files and configs and transfer them to another server + s3 storage
 
 You can follow these steps to take a backup from your database and transfer them to safe place outside of this server. then put it inside cronjob to do it periodically.
 First login to your server, we are use Ubuntu.
@@ -34,23 +34,6 @@ password=PUT_YOUR_PASSWORD_HERE
 ```
 Press `ctrl+x` then press `y` to save file and exit
 
-## get backup from database
-after above steps you can create a backup file from specefic database with command mysqldump without password. -v flag show process list and we don't need it inside automation process
-
-#### One specefic database
-```mysqldump -v --column-statistics=0 --quick --single-transaction YOUR_DATABASE_NAME > /home/backup-$(date +%Y%m%d-%H%M%S).sql```
-
-#### ALL database
-it's depend on you to create a backup from one database or all.
-
-```mysqldump -v --column-statistics=0 --quick --single-transaction --all-databases > backup-$(date +%Y%m%d-%H%M%S).sql```
-
-#### ALL database and compress bz2
-for our example database 1.7G compressed into 70Mb! so it's better to compress backup
-
-```mysqldump -v --column-statistics=0 --quick --single-transaction --all-databases | gzip > backup-$(date +%Y%m%d-%H%M%S).sql.gz```
-
-
 
 ## Setup File Mirroring Using Rsync
 To sync your files from server A (main) to server B (backup), follow these steps.
@@ -73,28 +56,29 @@ Press enter to skip all inputs.
 
 press yes and enter password of target server. you can change user to anything
 
-### rsync syntax example
-Connect on port 22 of ssh. delete file on target server if exist then copy to path in another server
 
-```rsync -avrt --delete --rsh='ssh -p 22' /home/backup-file.sql /target_server/path/```
+## Setup S3 cmd
+If you want to use s3 storage fro backup you need to install s3 cmd tools with below command
 
+```apt-get install s3cmd```
 
+After install, you need to config it with below command
 
-## Create sh file to do all steps
-We are recommend to create backup from all. so create a sh file
+```s3cmd --configure```
 
-```sudo nano /home/mysql-auto-backup/backup.sh```
+on config ask you below detail
 
-Copy and paste below line inside editor to create mysql backup
-
-```
-FILENAME=backup-$(date +%Y%m%d-%H%M%S).sql.gz
-mysqldump --column-statistics=0 --quick --single-transaction --all-databases | gzip > /home/mysql-auto-backup/$FILENAME
-rsync -avrt --delete /home/mysql-auto-backup/$FILENAME root@1.2.3.4:/home/mysql-auto-backup/
-```
-
-press `ctrl+x` then press `y` to save file and exit
-
+1. Access Key
+2. Secret Key
+3. Default Region (press enter)
+4. S3 Endpoint (give it from your s3 service something like fra1.digitaloceanspaces.com)
+5. DNS-Style template (like previous)
+6. Encryption password (press enter)
+7. Path to GPG program (press enter)
+8. use HTTPS (type `Yes` and press enter)
+9. Http Proy server name (press enter)
+10. Test access (type `Y` and press enter)
+11. if Success, ask for save setting. type `y` and press enter
 
 
 ## Setup cronjob
@@ -104,7 +88,7 @@ Setup a cronjob to sync your files automatically. This example syncs them every 
 
 paste below line to run sh
 
-```0 * * * * root sh /home/mysql-auto-backup/backup.sh >/dev/null 2>&1```
+```0 * * * * root sh /home/linux-auto-backup/backup.sh >/dev/null 2>&1```
 
 press `ctrl+x` then press `y` to save file and exit
 
