@@ -104,7 +104,7 @@ Setup a cronjob to sync your files automatically.
 paste below line to run bash. first line run every one hour. second run every day on 3:30. third run every month on 4:30
 
 ```
-0 * * * * root bash /home/linux-auto-backup/backup-hourly.sh >/dev/null 2>&1
+0 * * * * root bash /home/linux-auto-backup/backup-hourly+sync.sh >/dev/null 2>&1
 30 3 * * * root bash /home/linux-auto-backup/backup-daily.sh >/dev/null 2>&1
 30 4 1 * * root bash /home/linux-auto-backup/backup-monthly.sh >/dev/null 2>&1
 ```
