@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-#
-# Configure
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 # include yaml reader script
