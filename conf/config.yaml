@@ -1,5 +1,6 @@
 --
 server:
+  title: YOUR_SERVER_TITLE
   name: YOUR_SERVER_CUSTOM_NAME
 backup:
   server1: root@1.2.3.4
@@ -7,19 +8,28 @@ backup:
 #  server3: root@1.2.3.4
 s3:
   bucketSaved:
+  title: YOUR_BUCKET_TITLE
     name: YOUR_BUCKET_NAME
   bucket1:
+    title: YOUR_BUCKET_TITLE
     name: YOUR_BUCKET_NAME
     access: 123
     secret: 456
     endpoint: fra1.digitaloceanspaces.com
 #  bucket2:
+#    title: YOUR_BUCKET_TITLE
 #    name: YOUR_BUCKET_NAME
 #    access: 123
 #    secret: 456
 #    endpoint: s3.eu-west-1.amazonaws.com
 #  bucket3:
+#    title: YOUR_BUCKET_TITLE
 #    name: YOUR_BUCKET_NAME
 #    access: 123
 #    secret: 456
 #    endpoint: s3.ir-thr-at1.arvanstorage.com
+telegram:
+  token: YOUR_BOT_TOKEN
+  chatid: CHATID_OR_GROUPID_OR_CHANNELID
+  broker: CUSTOM_TUUNNEL_TO_TELEGRAM
+  brokertoken: CUSTOME_TUNNEL_TOKEN
