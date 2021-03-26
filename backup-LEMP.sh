@@ -3,12 +3,12 @@
 # create backup folder
 mkdir -p LEMP
 # copy nginx
-cp -r /etc/nginx LEMP/
+rsync -at --no-links /etc/nginx LEMP/ | grep -v "skipping non-regular file"
 # copy php
-cp -r /etc/php LEMP/
+rsync -at --no-links /etc/php LEMP/ | grep -v "skipping non-regular file"
 # copy MySQL
-cp -r /etc/mysql LEMP/
+rsync -at --no-links /etc/mysql LEMP/ | grep -v "skipping non-regular file"
 # copy ssl
-cp -r /etc/ssl LEMP/
+rsync -at --no-links /etc/ssl LEMP/ | grep -v "skipping non-regular file"
 # copy www folder
-cp -r /var/www LEMP/
+rsync -at --no-links /var/www LEMP/ | grep -v "skipping non-regular file"

@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-# shellcheck disable=SC2154
-# shellcheck disable=SC1091
 #
 # Configure
 cd "$(dirname "${BASH_SOURCE[0]}")"
@@ -10,6 +8,8 @@ source script/yaml.sh
 # include telegram reader script
 source script/telegram.sh
 
+# backup from LEMP. Nginx & PHP & MySQL & ...
+source backup-LEMP.sh
 
 #
 # Simple bash script to backup sql database into file with mysqldump and transfer it to another server
