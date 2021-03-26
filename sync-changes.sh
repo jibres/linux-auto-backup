@@ -3,11 +3,14 @@
 # shellcheck disable=SC1091
 #
 # Configure
-set -e
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 # include yaml reader script
 source script/yaml.sh
+# include telegram reader script
+source script/telegram.sh
+
+
 #
 # Simple bash script to backup sql database into file with mysqldump and transfer it to another server
 #
@@ -17,8 +20,8 @@ create_variables conf/config[$(hostname)].me.yaml
 
 BUSY=busy.log
 if test -f "$BUSY"; then
-	echo "********** it's busy from last action!"
-    echo "it's busy from last action!" >> log\busy-$(date +%Y%m%d-%H:%M:%S).log
+	echo "it's busy from last action!"
+    echo "it's busy from last action!" >> log/$(date +%Y%m%d-%H:%M)-busy.log
 	exit
 fi
 
@@ -124,7 +127,9 @@ fi
 
 # save log
 echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> finish **********' >> $BUSY
+telegram_send "`cat $BUSY`"
+
 mkdir -p log
-mv $BUSY log/archive-h$(date +%Y%m%d-%H:%M).log
+mv $BUSY log/$(date +%Y%m%d-%H:%M)-done.log
 
 echo "*** Mission Complete"

@@ -18,11 +18,11 @@ if [ $telegram_broker_url ]; then
 echo "send to telegram broker"
 
 curl \
--H X-TG-TOKEN:"${telegram_bot_token}" \
+-H X-TG-TOKEN:"$telegram_bot_token" \
 -H BROKER-TOKEN:"$telegram_broker_token" \
 -d parse_mode="HTML" \
--d chat_id="${telegram_chat_id}" \
--d text="${1}" \
+-d chat_id="$telegram_chat_id" \
+-d text="$1" \
 -d method="sendMessage" \
 $telegram_broker_url
 
