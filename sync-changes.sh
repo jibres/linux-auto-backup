@@ -21,6 +21,12 @@ if [ ! $server_name ]; then
 	server_name=`hostname`
 fi
 
+if [ ! $SECONDS ]; then
+	SECONDS=0
+fi
+
+
+
 # start from  backup
 if [ ! $BUSY ]; then
 
@@ -32,7 +38,7 @@ if [ ! $BUSY ]; then
 		exit
 	fi
 
-	NOTIF+="<b>"$server_title"</b> <code>$BACKUP_FOLDER</code>%0A"
+	NOTIF+="<b>"$server_title"</b> <u>$BACKUP_FOLDER</u>%0A"
 	NOTIF+=$(date +%Y/%m/%d)" "$(date +%H:%M:%S)"%0A"
 
 fi
@@ -146,7 +152,11 @@ fi
 
 # save log
 echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> finish **********' >> $BUSY
+
 #NOTIF+="⏱ $(date +%M:%S) Done"
+duration=$SECONDS
+NOTIF+="⏱ Done <i>$(($duration / 60)):$(($duration % 60))</i>"
+
 telegram_send "$NOTIF"
 
 mkdir -p log

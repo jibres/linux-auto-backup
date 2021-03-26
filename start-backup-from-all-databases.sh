@@ -20,6 +20,7 @@ if [ ! $server_name ]; then
 	server_name=`hostname`
 fi
 
+SECONDS=0
 
 BUSY=busy.log
 if test -f "$BUSY"; then
@@ -33,7 +34,7 @@ echo 'backup db --> '$(date +%Y%m%d-%H:%M:%S)' --> start' >> $BUSY
 
 
 # save start date for backup
-NOTIF="<b>"$server_title"</b> <code>$BACKUP_FOLDER</code>%0A"
+NOTIF="<b>"$server_title"</b> <u>$BACKUP_FOLDER</u>%0A"
 NOTIF+=$(date +%Y/%m/%d)" "$(date +%H:%M:%S)"%0A"
 
 
