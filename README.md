@@ -104,14 +104,18 @@ Setup a cronjob to sync your files automatically.
 paste below line to run bash. first line run every one hour. second run every day on 3:30. third run every 1st day of month on 4:30
 
 ```
-0 * * * * root bash /home/linux-auto-backup/backup-hourly+sync.sh >/dev/null 2>&1
-30 3 * * * root bash /home/linux-auto-backup/backup-daily.sh >/dev/null 2>&1
-30 4 1 * * root bash /home/linux-auto-backup/backup-monthly.sh >/dev/null 2>&1
+0 * * * * /bin/bash /home/linux-auto-backup/backup-hourly+sync.sh >/dev/null 2>&1
+30 3 * * * /bin/bash /home/linux-auto-backup/backup-daily.sh >/dev/null 2>&1
+30 4 1 * * /bin/bash /home/linux-auto-backup/backup-monthly.sh >/dev/null 2>&1
 ```
 
 if on this server you don't have database and only need to backup from files you can set below cmd
 
-```0 * * * * root bash /home/linux-auto-backup/sync-changes.sh >/dev/null 2>&1```
+```0 * * * * /bin/bash /home/linux-auto-backup/sync-changes.sh >/dev/null 2>&1```
+
+if you wand to debug result you can send log into file with below command
+
+```* * * * * /bin/bash /home/linux-auto-backup/backup-hourly+sync.sh > /home/linux-auto-backup/log/cronjob.log 2>&1```
 
 press `ctrl+x` then press `y` to save file and exit
 
