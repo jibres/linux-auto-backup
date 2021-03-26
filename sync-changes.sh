@@ -15,8 +15,15 @@ source script/yaml.sh
 # Execute yaml reader
 create_variables conf/config[$(hostname)].me.yaml
 
+BUSY=busy.log
+if test -f "$BUSY"; then
+	echo "********** it's busy from last action!"
+    echo "it's busy from last action!" >> log\busy-$(date +%Y%m%d-%H:%M:%S).log
+	exit
+fi
+
 # save log
-echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> start' >> busy.log
+echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> start' >> $BUSY
 
 
 #define server name
@@ -40,7 +47,7 @@ if [ $backup_server1 ]; then
 	echo "*** SYNC WITH TARGET SERVER 1"
 	echo "--> PATH "$backup_server1:$TARGET_PATH
 	# save log
-	echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> server 1 --> '$backup_server1:$TARGET_PATH >> busy.log
+	echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> server 1 --> '$backup_server1:$TARGET_PATH >> $BUSY
 	
 	rsync -avrt --rsync-path="mkdir -p $TARGET_PATH && rsync -avrt" $BACKUP_FROM $backup_server1:$TARGET_PATH
 fi
@@ -51,7 +58,7 @@ if [ $backup_server2 ]; then
 	echo "*** SYNC WITH TARGET SERVER 2"
 	echo "--> PATH "$backup_server2:$TARGET_PATH
 	# save log
-	echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> server 2 --> '$backup_server2:$TARGET_PATH >> busy.log
+	echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> server 2 --> '$backup_server2:$TARGET_PATH >> $BUSY
 	
 	rsync -avrt --rsync-path="mkdir -p $TARGET_PATH && rsync -avrt" $BACKUP_FROM $backup_server2:$TARGET_PATH
 fi
@@ -62,7 +69,7 @@ if [ $backup_server3 ]; then
 	echo "*** SYNC WITH TARGET SERVER 3"
 	echo "--> PATH "$backup_server3:$TARGET_PATH
 	# save log
-	echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> server 3 --> '$backup_server3:$TARGET_PATH >> busy.log
+	echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> server 3 --> '$backup_server3:$TARGET_PATH >> $BUSY
 	
 	rsync -avrt --rsync-path="mkdir -p $TARGET_PATH && rsync -avrt" $BACKUP_FROM $backup_server3:$TARGET_PATH
 fi
@@ -76,7 +83,7 @@ if [ $s3_bucketSaved_name ]; then
 	echo "*** SYNC WITH S3 STORAGE 0 - credential from config"
 	echo "--> PATH "s3://$s3_bucketSaved_name$TARGET_FOLDER
 	# save log
-	echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> bucket Saved --> s3://'$s3_bucketSaved_name$TARGET_FOLDER >> busy.log
+	echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> bucket Saved --> s3://'$s3_bucketSaved_name$TARGET_FOLDER >> $BUSY
 	
 	s3cmd sync $BACKUP_FROM s3://$s3_bucketSaved_name$TARGET_FOLDER
 fi
@@ -88,7 +95,7 @@ if [ $s3_bucket1_name ] && [ $s3_bucket1_access ] && [ $s3_bucket1_secret ] && [
 	echo "*** SYNC WITH S3 STORAGE 1"
 	echo "--> PATH " $s3_bucket1_endpoint -- s3://$s3_bucket1_name$TARGET_FOLDER
 	# save log
-	echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> bucket 1 --> '$s3_bucket1_endpoint' -- s3://'$s3_bucket1_name$TARGET_FOLDER >> busy.log
+	echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> bucket 1 --> '$s3_bucket1_endpoint' -- s3://'$s3_bucket1_name$TARGET_FOLDER >> $BUSY
 	
 	s3cmd sync --access_key=$s3_bucket1_access --secret_key=$s3_bucket1_secret --host=$s3_bucket1_endpoint --host-bucket=$s3_bucket1_endpoint $BACKUP_FROM s3://$s3_bucket1_name$TARGET_FOLDER
 fi
@@ -99,7 +106,7 @@ if [ $s3_bucket2_name ] && [ $s3_bucket2_access ] && [ $s3_bucket2_secret ] && [
 	echo "*** SYNC WITH S3 STORAGE 2"
 	echo "--> PATH "$s3_bucket2_endpoint -- s3://$s3_bucket2_name$TARGET_FOLDER
 	# save log
-	echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> bucket 2 --> '$s3_bucket2_endpoint' -- s3://'$s3_bucket2_name$TARGET_FOLDER >> busy.log
+	echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> bucket 2 --> '$s3_bucket2_endpoint' -- s3://'$s3_bucket2_name$TARGET_FOLDER >> $BUSY
 	
 	s3cmd sync --access_key=$s3_bucket2_access --secret_key=$s3_bucket2_secret --host=$s3_bucket2_endpoint --host-bucket=$s3_bucket2_endpoint $BACKUP_FROM s3://$s3_bucket2_name$TARGET_FOLDER
 fi
@@ -110,14 +117,14 @@ if [ $s3_bucket3_name ] && [ $s3_bucket3_access ] && [ $s3_bucket3_secret ] && [
 	echo "*** SYNC WITH S3 STORAGE 3"
 	echo "--> PATH "$s3_bucket3_endpoint -- s3://$s3_bucket3_name$TARGET_FOLDER
 	# save log
-	echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> bucket 3 --> '$s3_bucket3_endpoint' -- s3://'$s3_bucket3_name$TARGET_FOLDER >> busy.log
+	echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> bucket 3 --> '$s3_bucket3_endpoint' -- s3://'$s3_bucket3_name$TARGET_FOLDER >> $BUSY
 	
 	s3cmd sync --access_key=$s3_bucket3_access --secret_key=$s3_bucket3_secret --host=$s3_bucket3_endpoint --host-bucket=$s3_bucket3_endpoint $BACKUP_FROM s3://$s3_bucket3_name$TARGET_FOLDER
 fi
 
 # save log
-echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> finish **********' >> busy.log
+echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> finish **********' >> $BUSY
 mkdir -p log
-mv busy.log log/archive-h$(date +%Y%m%d-%H:%M).log
+mv $BUSY log/archive-h$(date +%Y%m%d-%H:%M).log
 
 echo "*** Mission Complete"
