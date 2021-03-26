@@ -105,7 +105,7 @@ if [ $s3_bucketSaved_name ]; then
 	# save log
 	echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> bucket Saved --> s3://'$s3_bucketSaved_name$TARGET_FOLDER >> $BUSY
 	
-	s3cmd sync $BACKUP_FROM s3://$s3_bucketSaved_name$TARGET_FOLDER
+	s3cmd sync --delete-removed $BACKUP_FROM s3://$s3_bucketSaved_name$TARGET_FOLDER
 	
 	NOTIF+="♨️ $(date +%M:%S) <code>"$s3_bucketSaved_title"</code>%0A"
 fi
@@ -119,7 +119,7 @@ if [ $s3_bucket1_name ] && [ $s3_bucket1_access ] && [ $s3_bucket1_secret ] && [
 	# save log
 	echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> bucket 1 --> '$s3_bucket1_endpoint' -- s3://'$s3_bucket1_name$TARGET_FOLDER >> $BUSY
 		
-	s3cmd sync --access_key=$s3_bucket1_access --secret_key=$s3_bucket1_secret --host=$s3_bucket1_endpoint --host-bucket=$s3_bucket1_endpoint $BACKUP_FROM s3://$s3_bucket1_name$TARGET_FOLDER
+	s3cmd sync --delete-removed --access_key=$s3_bucket1_access --secret_key=$s3_bucket1_secret --host=$s3_bucket1_endpoint --host-bucket=$s3_bucket1_endpoint $BACKUP_FROM s3://$s3_bucket1_name$TARGET_FOLDER
 	
 	NOTIF+="🚀 $(date +%M:%S) <code>"$s3_bucket1_title"</code>%0A"
 fi
@@ -132,7 +132,7 @@ if [ $s3_bucket2_name ] && [ $s3_bucket2_access ] && [ $s3_bucket2_secret ] && [
 	# save log
 	echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> bucket 2 --> '$s3_bucket2_endpoint' -- s3://'$s3_bucket2_name$TARGET_FOLDER >> $BUSY
 		
-	s3cmd sync --access_key=$s3_bucket2_access --secret_key=$s3_bucket2_secret --host=$s3_bucket2_endpoint --host-bucket=$s3_bucket2_endpoint $BACKUP_FROM s3://$s3_bucket2_name$TARGET_FOLDER
+	s3cmd sync --delete-removed --access_key=$s3_bucket2_access --secret_key=$s3_bucket2_secret --host=$s3_bucket2_endpoint --host-bucket=$s3_bucket2_endpoint $BACKUP_FROM s3://$s3_bucket2_name$TARGET_FOLDER
 	
 	NOTIF+="🚀 $(date +%M:%S) <code>"$s3_bucket2_title"</code>%0A"
 fi
@@ -145,7 +145,7 @@ if [ $s3_bucket3_name ] && [ $s3_bucket3_access ] && [ $s3_bucket3_secret ] && [
 	# save log
 	echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> bucket 3 --> '$s3_bucket3_endpoint' -- s3://'$s3_bucket3_name$TARGET_FOLDER >> $BUSY
 		
-	s3cmd sync --access_key=$s3_bucket3_access --secret_key=$s3_bucket3_secret --host=$s3_bucket3_endpoint --host-bucket=$s3_bucket3_endpoint $BACKUP_FROM s3://$s3_bucket3_name$TARGET_FOLDER
+	s3cmd sync --delete-removed --access_key=$s3_bucket3_access --secret_key=$s3_bucket3_secret --host=$s3_bucket3_endpoint --host-bucket=$s3_bucket3_endpoint $BACKUP_FROM s3://$s3_bucket3_name$TARGET_FOLDER
 	
 	NOTIF+="🚀 $(date +%M:%S) <code>"$s3_bucket3_title"</code>%0A"
 fi
