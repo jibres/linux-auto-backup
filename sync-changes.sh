@@ -18,10 +18,16 @@ source script/telegram.sh
 # Execute yaml reader
 create_variables conf/config[$(hostname)].me.yaml
 
+#define server name
+if [ ! $server_name ]; then
+	server_name=`hostname`
+fi
+
 BUSY=busy.log
 if test -f "$BUSY"; then
 	echo "it's busy from last action!"
     echo "it's busy from last action!" >> log/$(date +%Y%m%d-%H:%M)-busy.log
+	telegram_send "🆘 $server_name busy from last opr"
 	exit
 fi
 
@@ -29,12 +35,7 @@ fi
 echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> start' >> $BUSY
 
 
-#define server name
-if [ ! $server_name ]; then
-	server_name=`hostname`
-fi
-
-
+NOTIF="<b>"$server_name"</b> "$(date +%Y-%m-%d)" "$(date +%H:%M)"%0A"
 
 # address of backup folder, usually go one folder up from this folder
 BACKUP_FROM=$(pwd)/../
@@ -51,6 +52,7 @@ if [ $backup_server1 ]; then
 	echo "--> PATH "$backup_server1:$TARGET_PATH
 	# save log
 	echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> server 1 --> '$backup_server1:$TARGET_PATH >> $BUSY
+	NOTIF+="🛢 $(date +%M:%S) <code>"$backup_server3"</code>%0A"
 	
 	rsync -avrt --rsync-path="mkdir -p $TARGET_PATH && rsync -avrt" $BACKUP_FROM $backup_server1:$TARGET_PATH
 fi
@@ -62,6 +64,7 @@ if [ $backup_server2 ]; then
 	echo "--> PATH "$backup_server2:$TARGET_PATH
 	# save log
 	echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> server 2 --> '$backup_server2:$TARGET_PATH >> $BUSY
+	NOTIF+="🛢 $(date +%M:%S) <code>"$backup_server3"</code>%0A"
 	
 	rsync -avrt --rsync-path="mkdir -p $TARGET_PATH && rsync -avrt" $BACKUP_FROM $backup_server2:$TARGET_PATH
 fi
@@ -73,6 +76,7 @@ if [ $backup_server3 ]; then
 	echo "--> PATH "$backup_server3:$TARGET_PATH
 	# save log
 	echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> server 3 --> '$backup_server3:$TARGET_PATH >> $BUSY
+	NOTIF+="🛢 $(date +%M:%S) <code>"$backup_server3"</code>%0A"
 	
 	rsync -avrt --rsync-path="mkdir -p $TARGET_PATH && rsync -avrt" $BACKUP_FROM $backup_server3:$TARGET_PATH
 fi
@@ -87,7 +91,8 @@ if [ $s3_bucketSaved_name ]; then
 	echo "--> PATH "s3://$s3_bucketSaved_name$TARGET_FOLDER
 	# save log
 	echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> bucket Saved --> s3://'$s3_bucketSaved_name$TARGET_FOLDER >> $BUSY
-	
+	NOTIF+="🚀 $(date +%M:%S) <code>"$s3_bucketSaved_title"</code>%0A"
+
 	s3cmd sync $BACKUP_FROM s3://$s3_bucketSaved_name$TARGET_FOLDER
 fi
 
@@ -99,6 +104,7 @@ if [ $s3_bucket1_name ] && [ $s3_bucket1_access ] && [ $s3_bucket1_secret ] && [
 	echo "--> PATH " $s3_bucket1_endpoint -- s3://$s3_bucket1_name$TARGET_FOLDER
 	# save log
 	echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> bucket 1 --> '$s3_bucket1_endpoint' -- s3://'$s3_bucket1_name$TARGET_FOLDER >> $BUSY
+	NOTIF+="🚀 $(date +%M:%S) <code>"$s3_bucket1_title"</code>%0A"
 	
 	s3cmd sync --access_key=$s3_bucket1_access --secret_key=$s3_bucket1_secret --host=$s3_bucket1_endpoint --host-bucket=$s3_bucket1_endpoint $BACKUP_FROM s3://$s3_bucket1_name$TARGET_FOLDER
 fi
@@ -110,6 +116,7 @@ if [ $s3_bucket2_name ] && [ $s3_bucket2_access ] && [ $s3_bucket2_secret ] && [
 	echo "--> PATH "$s3_bucket2_endpoint -- s3://$s3_bucket2_name$TARGET_FOLDER
 	# save log
 	echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> bucket 2 --> '$s3_bucket2_endpoint' -- s3://'$s3_bucket2_name$TARGET_FOLDER >> $BUSY
+	NOTIF+="🚀 $(date +%M:%S) <code>"$s3_bucket2_title"</code>%0A"
 	
 	s3cmd sync --access_key=$s3_bucket2_access --secret_key=$s3_bucket2_secret --host=$s3_bucket2_endpoint --host-bucket=$s3_bucket2_endpoint $BACKUP_FROM s3://$s3_bucket2_name$TARGET_FOLDER
 fi
@@ -121,13 +128,15 @@ if [ $s3_bucket3_name ] && [ $s3_bucket3_access ] && [ $s3_bucket3_secret ] && [
 	echo "--> PATH "$s3_bucket3_endpoint -- s3://$s3_bucket3_name$TARGET_FOLDER
 	# save log
 	echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> bucket 3 --> '$s3_bucket3_endpoint' -- s3://'$s3_bucket3_name$TARGET_FOLDER >> $BUSY
+	NOTIF+="🚀 $(date +%M:%S) <code>"$s3_bucket3_title"</code>%0A"
 	
 	s3cmd sync --access_key=$s3_bucket3_access --secret_key=$s3_bucket3_secret --host=$s3_bucket3_endpoint --host-bucket=$s3_bucket3_endpoint $BACKUP_FROM s3://$s3_bucket3_name$TARGET_FOLDER
 fi
 
 # save log
 echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> finish **********' >> $BUSY
-telegram_send "`cat $BUSY`"
+NOTIF+="⏱ $(date +%M:%S) Synced"
+telegram_send "$NOTIF"
 
 mkdir -p log
 mv $BUSY log/$(date +%Y%m%d-%H:%M)-done.log
