@@ -10,4 +10,5 @@ cp -r /etc/php LEMP/
 cp -r /etc/mysql LEMP/
 # copy ssl
 cp -r /etc/ssl LEMP/
-
+# copy www folder
+cp -r /var/www LEMP/
