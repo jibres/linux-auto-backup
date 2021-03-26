@@ -28,6 +28,7 @@ curl \
 https://api.telegram.org/bot$telegram_token/sendMessage
 
 fi
+echo $'\n'
 
 fi
 }
