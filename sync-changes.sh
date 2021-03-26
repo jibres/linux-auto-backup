@@ -15,17 +15,16 @@ source script/yaml.sh
 # Execute yaml reader
 create_variables conf/config[$(hostname)].me.yaml
 
+# save log
+echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> start' >> busy.log
+
+
 #define server name
 if [ ! $server_name ]; then
 	server_name=`hostname`
 fi
 
 
-# check if need to transfer to bucket 1
-if [ -f conf/bucket_1.me.conf ]; then
-	BUCKET_1=`cat conf/bucket_1.me.conf`
-	BUCKET_1=$BUCKET_1|xargs
-fi
 
 # address of backup folder, usually go one folder up from this folder
 BACKUP_FROM=$(pwd)/../
@@ -40,6 +39,9 @@ if [ $backup_server1 ]; then
 	# sync with remote server 1
 	echo "*** SYNC WITH TARGET SERVER 1"
 	echo "--> PATH "$backup_server1:$TARGET_PATH
+	# save log
+	echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> server 1 --> '$backup_server1:$TARGET_PATH >> busy.log
+	
 	rsync -avrt --rsync-path="mkdir -p $TARGET_PATH && rsync -avrt" $BACKUP_FROM $backup_server1:$TARGET_PATH
 fi
 
@@ -48,6 +50,9 @@ if [ $backup_server2 ]; then
 	# sync with remote server 2
 	echo "*** SYNC WITH TARGET SERVER 2"
 	echo "--> PATH "$backup_server2:$TARGET_PATH
+	# save log
+	echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> server 2 --> '$backup_server2:$TARGET_PATH >> busy.log
+	
 	rsync -avrt --rsync-path="mkdir -p $TARGET_PATH && rsync -avrt" $BACKUP_FROM $backup_server2:$TARGET_PATH
 fi
 
@@ -56,6 +61,9 @@ if [ $backup_server3 ]; then
 	# sync with remote server 3
 	echo "*** SYNC WITH TARGET SERVER 3"
 	echo "--> PATH "$backup_server3:$TARGET_PATH
+	# save log
+	echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> server 3 --> '$backup_server3:$TARGET_PATH >> busy.log
+	
 	rsync -avrt --rsync-path="mkdir -p $TARGET_PATH && rsync -avrt" $BACKUP_FROM $backup_server3:$TARGET_PATH
 fi
 
@@ -67,6 +75,9 @@ if [ $s3_bucketSaved_name ]; then
 	# sync with s3 storage server 1
 	echo "*** SYNC WITH S3 STORAGE 0 - credential from config"
 	echo "--> PATH "s3://$s3_bucketSaved_name$TARGET_FOLDER
+	# save log
+	echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> bucket Saved --> s3://'$s3_bucketSaved_name$TARGET_FOLDER >> busy.log
+	
 	s3cmd sync $BACKUP_FROM s3://$s3_bucketSaved_name$TARGET_FOLDER
 fi
 
@@ -76,6 +87,9 @@ if [ $s3_bucket1_name ] && [ $s3_bucket1_access ] && [ $s3_bucket1_secret ] && [
 	# sync with s3 storage server 1
 	echo "*** SYNC WITH S3 STORAGE 1"
 	echo "--> PATH " $s3_bucket1_endpoint -- s3://$s3_bucket1_name$TARGET_FOLDER
+	# save log
+	echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> bucket 1 --> '$s3_bucket1_endpoint' -- s3://'$s3_bucket1_name$TARGET_FOLDER >> busy.log
+	
 	s3cmd sync --access_key=$s3_bucket1_access --secret_key=$s3_bucket1_secret --host=$s3_bucket1_endpoint --host-bucket=$s3_bucket1_endpoint $BACKUP_FROM s3://$s3_bucket1_name$TARGET_FOLDER
 fi
 
@@ -84,6 +98,9 @@ if [ $s3_bucket2_name ] && [ $s3_bucket2_access ] && [ $s3_bucket2_secret ] && [
 	# sync with s3 storage server 2
 	echo "*** SYNC WITH S3 STORAGE 2"
 	echo "--> PATH "$s3_bucket2_endpoint -- s3://$s3_bucket2_name$TARGET_FOLDER
+	# save log
+	echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> bucket 2 --> '$s3_bucket2_endpoint' -- s3://'$s3_bucket2_name$TARGET_FOLDER >> busy.log
+	
 	s3cmd sync --access_key=$s3_bucket2_access --secret_key=$s3_bucket2_secret --host=$s3_bucket2_endpoint --host-bucket=$s3_bucket2_endpoint $BACKUP_FROM s3://$s3_bucket2_name$TARGET_FOLDER
 fi
 
@@ -92,8 +109,15 @@ if [ $s3_bucket3_name ] && [ $s3_bucket3_access ] && [ $s3_bucket3_secret ] && [
 	# sync with s3 storage server 3
 	echo "*** SYNC WITH S3 STORAGE 3"
 	echo "--> PATH "$s3_bucket3_endpoint -- s3://$s3_bucket3_name$TARGET_FOLDER
+	# save log
+	echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> bucket 3 --> '$s3_bucket3_endpoint' -- s3://'$s3_bucket3_name$TARGET_FOLDER >> busy.log
+	
 	s3cmd sync --access_key=$s3_bucket3_access --secret_key=$s3_bucket3_secret --host=$s3_bucket3_endpoint --host-bucket=$s3_bucket3_endpoint $BACKUP_FROM s3://$s3_bucket3_name$TARGET_FOLDER
 fi
 
+# save log
+echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> finish **********' >> busy.log
+mkdir -p log
+mv busy.log log/archive-h$(date +%Y%m%d-%H:%M).log
 
 echo "*** Mission Complete"
