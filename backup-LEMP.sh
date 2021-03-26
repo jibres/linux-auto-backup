@@ -8,4 +8,6 @@ cp -r /etc/nginx LEMP/
 cp -r /etc/php LEMP/
 # copy MySQL
 cp -r /etc/mysql LEMP/
+# copy ssl
+cp -r /etc/ssl LEMP/
 
