@@ -35,7 +35,7 @@ fi
 echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> start' >> $BUSY
 
 
-NOTIF="<b>"$server_name"</b> "$(date +%Y-%m-%d)" "$(date +%H:%M)"%0A"
+NOTIF="<b>"$server_title"</b> "$(date +%Y/%m/%d)" "$(date +%H:%M)"%0A"
 
 # address of backup folder, usually go one folder up from this folder
 BACKUP_FROM=$(pwd)/../
@@ -135,7 +135,7 @@ fi
 
 # save log
 echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> finish **********' >> $BUSY
-NOTIF+="⏱ $(date +%M:%S) Synced"
+NOTIF+="⏱ $(date +%M:%S) Done"
 telegram_send "$NOTIF"
 
 mkdir -p log
