@@ -33,6 +33,7 @@ if [ ! $BUSY ]; then
 	BUSY=busy.log
 	if test -f "$BUSY"; then
 		echo "it's busy from last action!"
+		mkdir -p log
 		echo "it's busy from last action!" >> log/$(date +%Y%m%d-%H:%M)-sync-busy.log
 		telegram_send "🆘 $server_name busy from last opr on sync! $BACKUP_FOLDER"
 		exit
