@@ -28,7 +28,6 @@ if test -f "$BUSY"; then
 	mkdir -p log
     echo "it's busy from last action on db!" >> log/$(date +%Y%m%d-%H:%M)-db-busy.log
 	telegram_send "🧨 $server_name busy from last opr on db backup! $BACKUP_FOLDER"
-	exit
 fi
 # save log
 echo 'backup db --> '$(date +%Y%m%d-%H:%M:%S)' --> start' >> $BUSY
