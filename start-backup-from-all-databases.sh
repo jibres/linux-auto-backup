@@ -79,7 +79,7 @@ FILEPATH=$FOLDER_PATH/$FILENAME
 
 # create a dump from all database
 echo "*** START DUMP DATABASE"
-mysqldump --quick --single-transaction --column-statistics=0 --verbose --all-databases | gzip > $FILEPATH
+mysqldump --quick --single-transaction --column-statistics=0 --verbose --all-databases --skip-lock-tables | gzip > $FILEPATH
 
 echo 'backup db --> '$(date +%Y%m%d-%H:%M:%S)' --> finish' >> $BUSY
 NOTIF+="🆗 $(date +%M:%S) <code>DB Backup</code>%0A"
