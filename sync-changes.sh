@@ -52,7 +52,7 @@ echo 'sync --> '$(date +%Y%m%d-%H:%M:%S)' --> start' >> $BUSY
 BACKUP_FROM=$(pwd)/../
 
 #define remote server path
-TARGET_FOLDER=/jib-backup/$server_name/
+TARGET_FOLDER=/backup/$server_name/
 TARGET_PATH=/home$TARGET_FOLDER
 
 
